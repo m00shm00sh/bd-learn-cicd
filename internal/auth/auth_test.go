@@ -1,45 +1,46 @@
 package auth
+
 import (
-	"testing"
 	"net/http"
+	"testing"
 )
 
 func TestGetAPIKey(t *testing.T) {
-	cases := []struct{
-		descr string
-		inputFactory func () http.Header
-		exp string
-		expErr error
+	cases := []struct {
+		descr        string
+		inputFactory func() http.Header
+		exp          string
+		expErr       error
 	}{
 		{
 			"no auth",
-			func () http.Header {
+			func() http.Header {
 				h := make(http.Header)
 				return h
 			},
 			"",
 			ErrNoAuthHeaderIncluded,
-		},{
+		}, {
 			"short header",
-			func () http.Header {
+			func() http.Header {
 				h := make(http.Header)
 				h.Add("Authorization", "Fred")
 				return h
 			},
 			"",
 			ErrMalformedAuthHeader,
-		},{
+		}, {
 			"invalid header",
-			func () http.Header {
+			func() http.Header {
 				h := make(http.Header)
 				h.Add("Authorization", "Foo bar")
 				return h
 			},
 			"",
 			ErrMalformedAuthHeader,
-		},{
+		}, {
 			"valid header",
-			func () http.Header {
+			func() http.Header {
 				h := make(http.Header)
 				h.Add("Authorization", "ApiKey 123")
 				return h
@@ -55,6 +56,3 @@ func TestGetAPIKey(t *testing.T) {
 		}
 	}
 }
-		
-
-		
